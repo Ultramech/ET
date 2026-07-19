@@ -18,6 +18,7 @@ function formatTimeAgo(ts: number) {
 
 export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boolean }) {
   const [filter, setFilter] = useState<"all" | "critical" | "pending">("all");
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedFault, setSelectedFault] = useState<Fault | null>(null);
   const [isReporting, setIsReporting] = useState(false);
 
@@ -34,6 +35,8 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
     if (f.status === "resolved") return false; // Hide resolved by default in the main view
     return true;
   });
+
+  const displayedFaults = isExpanded ? visibleFaults : visibleFaults.slice(0, 4);
 
   const getIcon = (severity: Fault["severity"]) => {
     switch (severity) {
@@ -69,7 +72,8 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
   };
 
   return (
-    <div className="card-md flex flex-col p-5 bg-[var(--color-panel)] border-[var(--color-border)] shadow-sm">
+    <>
+      <div className="card-md flex flex-col p-5 bg-[var(--color-panel)] border-[var(--color-border)] shadow-sm">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
         <h2 className="text-[18px] font-bold text-[var(--color-fg)]">Fault Feed</h2>
@@ -112,10 +116,10 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
 
       {/* List */}
       <div className="flex flex-col max-h-[400px] overflow-y-auto mt-2 space-y-1 pr-1">
-        {visibleFaults.length === 0 ? (
+        {displayedFaults.length === 0 ? (
           <div className="py-8 text-center text-sm text-[var(--color-muted)]">No faults to display.</div>
         ) : (
-          visibleFaults.map((fault) => (
+          displayedFaults.map((fault) => (
             <div 
               key={fault.id}
               onClick={() => setSelectedFault(fault)}
@@ -173,10 +177,16 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-[var(--color-border)] text-center">
-        <button className="text-[12px] font-semibold text-[var(--color-accent)] hover:underline">
-          View Comprehensive History
-        </button>
+      {visibleFaults.length > 4 && (
+        <div className="mt-4 pt-3 border-t border-[var(--color-border)] text-center">
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-[12px] font-semibold text-[var(--color-accent)] hover:underline"
+          >
+            {isExpanded ? "Show Less" : "Show More"}
+          </button>
+        </div>
+      )}
       </div>
 
       {/* Fault Details Modal */}
@@ -310,6 +320,6 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
