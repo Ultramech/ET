@@ -1,0 +1,38 @@
+{
+  "name": "sutradhar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "ingest:real": "node scripts/ingest-real.mjs",
+    "reindex": "curl -s -X POST http://localhost:3000/api/admin/reindex",
+    "embed": "curl -s -X POST http://localhost:3000/api/admin/embed"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.12",
+    "@ai-sdk/react": "^4.0.21",
+    "ai": "^7.0.20",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.24.0",
+    "next": "16.2.10",
+    "next-themes": "^0.4.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0",
+    "unpdf": "^1.6.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

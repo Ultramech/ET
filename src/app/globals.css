@@ -1,0 +1,184 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Google Material You — Light Surface palette */
+  --color-bg: #F3F4F8;          /* Google's background surface */
+  --color-panel: #FFFFFF;
+  --color-panel-2: #ECF0F8;
+  --color-border: #E0E4EE;
+  --color-muted: #5F6A85;
+  --color-fg: #0D1117;
+  --color-accent: #1A73E8;      /* Google Blue */
+  --color-accent-2: #E37400;
+  --color-warn: #B06000;
+  --color-danger: #C5221F;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ── Dark Mode Palette ──────────────────────────────── */
+.dark {
+  --color-bg: #101213;          /* Darkest background */
+  --color-panel: #1A1C1F;       /* Slightly lighter for cards */
+  --color-panel-2: #24272B;     /* Inner interactive elements */
+  --color-border: #33373E;      /* Subtle borders */
+  --color-muted: #667085;       /* Secondary grey */
+  --color-fg: #E8EAED;          /* Light text */
+  --color-accent: #1570EF;      /* Primary Blue */
+  --color-accent-2: #C85000;    /* Tertiary Orange */
+  --color-warn: #F29900;
+  --color-danger: #E24329;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  /* Prevent the page itself from scrolling horizontally.
+     Inner scroll containers (scroll-row, scroll-grid-2) still scroll. */
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+* { border-color: var(--color-border); }
+
+/* ── Scrollbar — hidden but functional ──────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #C4CBDA; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ── Animations ─────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.fade-up { animation: fadeUp 0.4s cubic-bezier(.22,1,.36,1) both; }
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
+.pulse-dot { animation: pulseDot 1.6s ease-in-out infinite; }
+
+/* ── Subtle dot grid ────────────────────────────────── */
+.grid-bg {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(circle at 1px 1px, rgba(26,115,232,0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ── Card — Material You elevated surface ───────────── */
+.card-md {
+  background: var(--color-panel);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.card-md:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 6px 20px rgba(26,115,232,0.09);
+  transform: translateY(-2px);
+}
+
+/* ── Sidebar ────────────────────────────────────────── */
+.sidebar-shadow { box-shadow: 2px 0 20px rgba(0,0,0,0.06); }
+
+/* ── Active nav left-indicator ──────────────────────── */
+.nav-active-bar::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 5px; bottom: 5px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--color-accent);
+}
+
+/* ── Horizontal scroll row ──────────────────────────── */
+/* min-width: 0 is critical: without it, a flex child reports
+   its intrinsic content width as its minimum size, which causes
+   the PAGE to scroll instead of the container. */
+.scroll-row {
+  display: flex;
+  min-width: 0;          /* <-- the key fix */
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.scroll-row:active { cursor: grabbing; }
+.scroll-row::-webkit-scrollbar { display: none; }
+.scroll-row > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ── 2-row horizontal scroll grid ───────────────────── */
+/* Cards flow into columns: row 1 top, row 2 bottom.    */
+.scroll-grid-2 {
+  display: grid;
+  min-width: 0;          /* <-- prevents intrinsic-width blowout */
+  grid-template-rows: 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 260px;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.scroll-grid-2:active { cursor: grabbing; }
+.scroll-grid-2::-webkit-scrollbar { display: none; }
+.scroll-grid-2 > * { scroll-snap-align: start; }
+
+/* ── Section header row ─────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 600; color: #fff;
+  background: var(--color-accent); border: none; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-outline-danger {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  color: var(--color-danger); background: var(--color-panel);
+  border: 1.5px solid var(--color-danger); cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-outline-danger:hover { background: var(--color-panel-2); transform: translateY(-1px); }
+
+/* legacy alias */
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  color: var(--color-accent); background: var(--color-panel);
+  border: 1.5px solid var(--color-accent); cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-outline:hover { background: var(--color-panel-2); transform: translateY(-1px); }
+
+/* ── Drag-scroll JS hook ─────────────────────────────── */
+/* Used by the client component wrapper */
+.drag-scroll-active { cursor: grabbing; user-select: none; }
