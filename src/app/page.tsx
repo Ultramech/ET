@@ -30,6 +30,7 @@ export const dynamic = "force-dynamic";
 export default async function Dashboard() {
   const session = await verifyToken((await cookies()).get(SESSION_COOKIE)?.value);
   const isAdmin = session?.role === "admin";
+  const currentUser = session?.username || (isAdmin ? "Admin User" : "Field Agent");
   const store = getStore();
   const lessons = deriveLessons();
   const gaps = store.compliance.filter((c) => c.status !== "compliant");
@@ -40,51 +41,43 @@ export default async function Dashboard() {
 
       {/* ── Hero ─────────────────────────────────────────── */}
       <div className="fade-up">
-        {/* <div className="flex flex-wrap items-center gap-2">
-          <Badge color="accent">Industrial Knowledge Intelligence</Badge>
-          <Badge color={isLLMAvailable() ? "green" : "warn"}>
-            {isLLMAvailable() ? "LLM online" : "Offline-safe fallback"}
-          </Badge>
-        </div> */}
         <h1 className="mt-3 text-[28px] font-bold leading-tight tracking-tight text-[var(--color-fg)] md:text-[32px]">
-          One brain for every plant document.
+          The Unified Asset & Operations Brain
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-muted)]">
-          {PLANT.name} · {PLANT.unit} · {PLANT.capacity}. Sutradhar has ingested{" "}
-          {store.documents.length} documents from {docTypes} disconnected systems and woven them
-          into a single, cited, continuously-updated knowledge graph — surfacing answers, root
-          causes and compliance gaps no single team could see alone.
+          {PLANT.name} · {PLANT.unit} · {PLANT.capacity}. Connecting{" "}
+          {store.documents.length} documents across {docTypes} disconnected systems. Get instant answers, prevent unplanned downtime, and automatically track compliance gaps — all from one unified dashboard.
         </p>
       </div>
 
       {/* ── Fault Feed — replaces old proactive alert ─── */}
-      <FaultFeed faults={store.faults} isAdmin={isAdmin} />
+      <FaultFeed faults={store.faults} isAdmin={isAdmin} currentUser={currentUser} />
 
       {/* ── Module Cards — 2-row horizontal scroll grid ──────── */}
       <section>
         <p className="section-label">Modules</p>
         <DragScroll variant="grid2">
           {/* Row 1 fills top cells, row 2 fills bottom — grid-auto-flow: column */}
-          <ModuleCard href="/copilot" icon={<MessagesSquare size={18} />} title="Expert Copilot" desc="Ask anything across the corpus. Cited, confidence-scored, refuses to guess on safety." tag="RAG · mobile-first" />
-          <ModuleCard href="/compliance" icon={<ShieldCheck size={18} />} title="Compliance Intelligence" desc="Maps OISD / PESO / Factory Act against real plant state, auto-builds audit evidence." tag={`${gaps.length} gaps`} />
-          <ModuleCard href="/graph" icon={<Share2 size={18} />} title="Knowledge Graph" desc="Interactive map of equipment, documents, regulations and failure modes." tag="Ontology · linkage" />
-          <ModuleCard href="/lessons" icon={<Lightbulb size={18} />} title="Lessons Learned" desc="Detects recurring failure signatures across the fleet and pushes warnings before they recur." tag={`${lessons.length} patterns`} />
-          <ModuleCard href="/maintenance" icon={<Wrench size={18} />} title="Maintenance & RCA" desc="Fuses work orders, inspections and incidents into a 5-Whys root cause across departments." tag="Agentic" />
+          <ModuleCard href="/copilot" icon={<MessagesSquare size={18} />} title="Expert Knowledge Copilot" desc="Talk to your documents. Ask questions and get instant, accurate answers with citations for field technicians." tag="Mobile-Ready" />
+          <ModuleCard href="/compliance" icon={<ShieldCheck size={18} />} title="Quality & Compliance" desc="Automatically map your procedures against safety regulations to instantly identify any compliance gaps." tag={`${gaps.length} Action Items`} />
+          <ModuleCard href="/graph" icon={<Share2 size={18} />} title="Knowledge Graph" desc="Explore a visual map connecting all your equipment, maintenance records, and safety regulations together." tag="Connected Data" />
+          <ModuleCard href="/lessons" icon={<Lightbulb size={18} />} title="Lessons Learned" desc="Learn from past incidents. AI analyzes historical data to warn your team before similar failures happen again." tag={`${lessons.length} Insights`} />
+          <ModuleCard href="/maintenance" icon={<Wrench size={18} />} title="Maintenance & RCA" desc="Combine work orders and inspections to automatically find the root cause of equipment failures." tag="Predictive" />
           {isAdmin ? (
-            <ModuleCard href="/ingest" icon={<Upload size={18} />} title="Universal Ingestion" desc="Drop in any document — chunked, entities extracted, auto-linked into the graph live." tag="Watch it link" />
+            <ModuleCard href="/ingest" icon={<Upload size={18} />} title="Universal Ingestion" desc="Upload any PDF, manual, or spreadsheet. Our AI automatically reads, organizes, and links it to your systems." tag="Auto-Organize" />
           ) : (
-            <ModuleCard href="/documents" icon={<Upload size={18} />} title="Document Corpus" desc="Browse every unified source — P&IDs, SOPs, work orders, inspections and regulations." tag={`${store.documents.length} docs`} />
+            <ModuleCard href="/documents" icon={<Upload size={18} />} title="Document Library" desc="Browse all your unified files in one place — including manuals, operating procedures, and inspection reports." tag={`${store.documents.length} Files`} />
           )}
         </DragScroll>
       </section>
 
       {/* ── Value Tiles — horizontal scroll ──────────────── */}
       <section>
-        <p className="section-label">Why Sutradhar</p>
+        <p className="section-label">Why Nexus</p>
         <DragScroll>
           <ValueTile icon={<Clock size={20} />} big="~35% → seconds" small="of working hours spent searching, reclaimed" />
           <ValueTile icon={<Layers size={20} />} big="7–12 → 1" small="disconnected systems unified into one brain" />
-          <ValueTile icon={<Search size={20} />} big="0 hallucinations" small="answers are cited or the system says 'I don't know'" />
+          <ValueTile icon={<Search size={20} />} big="100% Reliable" small="answers are fully cited, or the system safely admits 'I don't know'" />
         </DragScroll>
       </section>
 

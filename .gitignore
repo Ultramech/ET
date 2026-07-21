@@ -41,7 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Sutradhar corpus (large, regenerable via scripts/ingest-real.mjs)
+# Nexus corpus (large, regenerable via scripts/ingest-real.mjs)
 /data/corpus/
 /data/users.json
 /data/gaps.json

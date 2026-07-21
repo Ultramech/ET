@@ -93,7 +93,7 @@ export default function CopilotPage() {
       <SectionTitle
         icon={<MessagesSquare size={18} />}
         title="Expert Knowledge Copilot"
-        desc="Conversational answers across every connected document — cited, confidence-scored, and built for a technician's phone in the field."
+        desc="Get instant, reliable answers from all your manuals and procedures, designed perfectly for field technicians."
       />
 
       {/* Conversation */}
@@ -169,8 +169,7 @@ function EmptyState({ onPick }: { onPick: (q: string) => void }) {
       </div>
       <h2 className="mt-3 text-sm font-semibold">Ask the plant anything</h2>
       <p className="mx-auto mt-1 max-w-md text-xs text-[var(--color-muted)]">
-        Answers are grounded in the actual documents with source citations and a confidence score.
-        On safety-critical requests, Sutradhar refuses to guess.
+        Ask questions about your equipment or procedures. Every answer includes a link to the exact document it was found in, so you can always trust the information.
       </p>
       <div className="mx-auto mt-4 grid max-w-md gap-2 sm:grid-cols-2">
         {SAMPLES.slice(0, 4).map((s) => (

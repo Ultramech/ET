@@ -32,13 +32,13 @@ const Schema = z.object({
 
 declare global {
   // eslint-disable-next-line no-var
-  var __sutradhar_compliance: ComplianceItem[] | undefined;
+  var __Nexus_compliance: ComplianceItem[] | undefined;
 }
 
 export async function computeCompliance(refresh = false): Promise<ComplianceItem[]> {
   const store = getStore();
   if (!refresh && store.compliance.length) return store.compliance;
-  if (!refresh && globalThis.__sutradhar_compliance) return globalThis.__sutradhar_compliance;
+  if (!refresh && globalThis.__Nexus_compliance) return globalThis.__Nexus_compliance;
 
   // focus on the operating plant (seed unit) so findings are coherent & grounded
   const plantDocs = store.documents.filter(
@@ -84,12 +84,12 @@ export async function computeCompliance(refresh = false): Promise<ComplianceItem
         dueDate: it.dueDate,
       }));
       store.compliance = items;
-      globalThis.__sutradhar_compliance = items;
+      globalThis.__Nexus_compliance = items;
       return items;
     }
   }
 
   // deterministic curated baseline
-  globalThis.__sutradhar_compliance = SEED_COMPLIANCE;
+  globalThis.__Nexus_compliance = SEED_COMPLIANCE;
   return SEED_COMPLIANCE;
 }

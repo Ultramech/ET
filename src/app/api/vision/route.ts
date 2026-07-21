@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   try {
     if (!b64 && imageUrl) {
       if (!/^https?:\/\//.test(imageUrl)) return NextResponse.json({ error: "invalid imageUrl" }, { status: 400 });
-      const res = await fetch(imageUrl, { headers: { "User-Agent": "SutradharBot/1.0" }, signal: AbortSignal.timeout(30000) });
+      const res = await fetch(imageUrl, { headers: { "User-Agent": "NexusBot/1.0" }, signal: AbortSignal.timeout(30000) });
       if (!res.ok) return NextResponse.json({ error: `image fetch HTTP ${res.status}` }, { status: 422 });
       mime = res.headers.get("content-type") || mime;
       const buf = new Uint8Array(await res.arrayBuffer());

@@ -33,7 +33,7 @@ function resolveFile(): string {
     fs.accessSync(primary, fs.constants.W_OK);
     return path.join(primary, "gaps.json");
   } catch {
-    const tmp = path.join("/tmp", "sutradhar-data");
+    const tmp = path.join("/tmp", "Nexus-data");
     fs.mkdirSync(tmp, { recursive: true });
     return path.join(tmp, "gaps.json");
   }
@@ -43,29 +43,29 @@ const FILE = resolveFile();
 
 declare global {
   // eslint-disable-next-line no-var
-  var __sutradhar_gaps: KnowledgeGap[] | undefined;
+  var __Nexus_gaps: KnowledgeGap[] | undefined;
 }
 
 function load(): KnowledgeGap[] {
-  if (globalThis.__sutradhar_gaps) return globalThis.__sutradhar_gaps;
+  if (globalThis.__Nexus_gaps) return globalThis.__Nexus_gaps;
   try {
     if (fs.existsSync(FILE)) {
       const data = JSON.parse(fs.readFileSync(FILE, "utf-8")) as KnowledgeGap[];
       if (Array.isArray(data)) {
-        globalThis.__sutradhar_gaps = data;
+        globalThis.__Nexus_gaps = data;
         return data;
       }
     }
   } catch (e) {
     console.error("[gaps] load failed:", (e as Error).message);
   }
-  globalThis.__sutradhar_gaps = [];
-  return globalThis.__sutradhar_gaps;
+  globalThis.__Nexus_gaps = [];
+  return globalThis.__Nexus_gaps;
 }
 
 function save() {
   try {
-    fs.writeFileSync(FILE, JSON.stringify(globalThis.__sutradhar_gaps ?? [], null, 2), "utf-8");
+    fs.writeFileSync(FILE, JSON.stringify(globalThis.__Nexus_gaps ?? [], null, 2), "utf-8");
   } catch (e) {
     console.error("[gaps] save failed:", (e as Error).message);
   }
@@ -141,7 +141,7 @@ export async function captureGap(
 export function deleteGap(id: string): boolean {
   const gaps = load();
   const before = gaps.length;
-  globalThis.__sutradhar_gaps = gaps.filter((g) => g.id !== id);
+  globalThis.__Nexus_gaps = gaps.filter((g) => g.id !== id);
   save();
-  return globalThis.__sutradhar_gaps.length < before;
+  return globalThis.__Nexus_gaps.length < before;
 }

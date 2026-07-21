@@ -3,7 +3,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import type { z } from "zod";
 
 // ---------------------------------------------------------------------------
-// Multi-provider AI layer for Sutradhar.
+// Multi-provider AI layer for Nexus.
 //
 // Priority: Gemini (direct, multimodal — best for P&ID vision) → Vercel AI
 // Gateway (any "provider/model" string) → deterministic fallback. Every call
@@ -17,8 +17,8 @@ const GATEWAY_KEY = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TO
 
 const google = GEMINI_KEY ? createGoogleGenerativeAI({ apiKey: GEMINI_KEY }) : null;
 
-const TEXT_MODEL = process.env.SUTRADHAR_MODEL || "gemini-2.5-flash";
-const GATEWAY_TEXT = process.env.SUTRADHAR_GATEWAY_MODEL || "google/gemini-2.5-flash";
+const TEXT_MODEL = process.env.Nexus_MODEL || "gemini-2.5-flash";
+const GATEWAY_TEXT = process.env.Nexus_GATEWAY_MODEL || "google/gemini-2.5-flash";
 const EMBED_DIM = 768;
 
 export type Provider = "gemini" | "gateway" | "none";

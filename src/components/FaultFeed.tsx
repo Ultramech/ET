@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AlertTriangle, AlertCircle, CheckCircle2, Zap, ChevronRight, X, ArrowRight } from "lucide-react";
 import type { Fault } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -16,8 +17,8 @@ function formatTimeAgo(ts: number) {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boolean }) {
-  const [filter, setFilter] = useState<"all" | "critical" | "pending">("all");
+export function FaultFeed({ faults, isAdmin, currentUser }: { faults: Fault[]; isAdmin: boolean; currentUser: string }) {
+  const [filter, setFilter] = useState<"all" | "critical" | "pending" | "resolved">("all");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedFault, setSelectedFault] = useState<Fault | null>(null);
   const [isReporting, setIsReporting] = useState(false);
@@ -25,18 +26,22 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
   // Form state
   const [reportTitle, setReportTitle] = useState("");
   const [reportDesc, setReportDesc] = useState("");
+  const [reportSeverity, setReportSeverity] = useState<Fault["severity"]>("warning");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Filter logic
   const visibleFaults = faults.filter((f) => {
     if (f.status === "pending" && !isAdmin) return false; // Non-admins don't see pending
+    
+    if (filter === "resolved") return f.status === "resolved";
+    if (f.status === "resolved") return false; // Hide resolved from all other views
+
     if (filter === "critical") return f.severity === "critical" && (f.status === "approved" || f.status === "resolve_requested");
     if (filter === "pending") return f.status === "pending" || f.status === "resolve_requested";
-    if (f.status === "resolved") return false; // Hide resolved by default in the main view
     return true;
   });
 
-  const displayedFaults = isExpanded ? visibleFaults : visibleFaults.slice(0, 4);
+  const displayedFaults = isExpanded ? visibleFaults : visibleFaults.slice(0, 3);
 
   const getIcon = (severity: Fault["severity"]) => {
     switch (severity) {
@@ -59,7 +64,7 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
   const handleReport = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await reportFault(reportTitle, reportDesc, isAdmin ? "Admin User" : "Field Agent");
+    await reportFault(reportTitle, reportDesc, currentUser, reportSeverity);
     setReportTitle("");
     setReportDesc("");
     setIsSubmitting(false);
@@ -79,12 +84,7 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
         <h2 className="text-[18px] font-bold text-[var(--color-fg)]">Fault Feed</h2>
         
         <div className="flex flex-wrap items-center gap-2">
-          <button 
-            onClick={() => setIsReporting(true)}
-            className="text-[12px] font-medium px-3 py-1.5 rounded-full bg-[var(--color-accent)] text-white hover:opacity-90 transition"
-          >
-            Report Problem
-          </button>
+
           
           <div className="flex bg-[var(--color-panel-2)] rounded-full p-1 border border-[var(--color-border)]">
             <button
@@ -98,6 +98,12 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
               className={cn("text-[11px] font-semibold px-3 py-1 rounded-full transition", filter === "critical" ? "bg-[var(--color-panel)] text-[var(--color-fg)] shadow-sm" : "text-[var(--color-muted)] hover:text-[var(--color-fg)]")}
             >
               Critical Only
+            </button>
+            <button
+              onClick={() => setFilter("resolved")}
+              className={cn("text-[11px] font-semibold px-3 py-1 rounded-full transition", filter === "resolved" ? "bg-[var(--color-panel)] text-[var(--color-fg)] shadow-sm" : "text-[var(--color-muted)] hover:text-[var(--color-fg)]")}
+            >
+              Resolved
             </button>
             {isAdmin && (
               <button
@@ -134,9 +140,9 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
                   <h3 className="text-[13px] font-bold text-[var(--color-fg)] truncate flex items-center gap-2">
                     {fault.title}
                     {fault.status === "pending" && <Badge color="warn">Pending Approval</Badge>}
-                    {fault.status === "resolve_requested" && <Badge color="green">Pending Solve Approval</Badge>}
+                    {fault.status === "resolve_requested" && <Badge color="green">Pending Resolve Approval</Badge>}
                   </h3>
-                  <span className="text-[11px] text-[var(--color-muted)] shrink-0">{formatTimeAgo(fault.timestamp)}</span>
+                  <span className="text-[11px] text-[var(--color-muted)] shrink-0">{fault.reportedBy} · {formatTimeAgo(fault.timestamp)}</span>
                 </div>
                 <p className="mt-1 text-[12px] text-[var(--color-muted)] line-clamp-1">{fault.description}</p>
                 {(fault.status === "pending" || fault.status === "resolve_requested") && isAdmin && (
@@ -177,21 +183,27 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
         )}
       </div>
 
-      {visibleFaults.length > 4 && (
-        <div className="mt-4 pt-3 border-t border-[var(--color-border)] text-center">
+      <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex flex-col items-center gap-3">
+        {visibleFaults.length > 4 && (
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-[12px] font-semibold text-[var(--color-accent)] hover:underline"
           >
             {isExpanded ? "Show Less" : "Show More"}
           </button>
-        </div>
-      )}
+        )}
+        <button 
+          onClick={() => setIsReporting(true)}
+          className="text-[12px] font-medium px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white hover:opacity-90 transition w-full max-w-[200px]"
+        >
+          Report Problem
+        </button>
+      </div>
       </div>
 
       {/* Fault Details Modal */}
-      {selectedFault && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      {selectedFault && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-lg bg-[var(--color-panel)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex justify-between items-start p-5 border-b border-[var(--color-border)]">
               <div className="flex items-center gap-3">
@@ -220,21 +232,21 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
                       onClick={async () => { await resolveFault(selectedFault.id); setSelectedFault(null); }}
                       className="px-4 py-2 rounded-xl text-[13px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/15 border border-transparent hover:bg-emerald-500/25 transition"
                     >
-                      Approve Solve
+                      Approve Resolve
                     </button>
                     <button 
                       onClick={async () => { await denyResolveFault(selectedFault.id); setSelectedFault(null); }}
                       className="px-4 py-2 rounded-xl text-[13px] font-semibold text-[var(--color-danger)] border border-transparent bg-[var(--color-danger)]/15 hover:bg-[var(--color-danger)]/25 transition"
                     >
-                      Deny Solve
+                      Deny Resolve
                     </button>
                   </>
                 ) : (
                   <button disabled className="px-4 py-2 rounded-xl text-[13px] font-semibold text-[var(--color-muted)] border border-[var(--color-border)] bg-[var(--color-panel)] cursor-not-allowed">
-                    Solve Requested...
+                    Resolve Requested...
                   </button>
                 )
-              ) : (
+              ) : selectedFault.status !== "resolved" ? (
                 <button 
                   onClick={async () => {
                     if (isAdmin) {
@@ -246,20 +258,21 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
                   }}
                   className="px-4 py-2 rounded-xl text-[13px] font-semibold text-[var(--color-fg)] border border-[var(--color-border)] bg-[var(--color-panel)] hover:bg-[var(--color-panel-2)] transition"
                 >
-                  Mark as Solved
+                  Mark as Resolved
                 </button>
-              )}
+              ) : null}
               <button className="px-4 py-2 rounded-xl text-[13px] font-semibold bg-[var(--color-danger)] text-white hover:opacity-90 transition flex items-center gap-2">
                 Run RCA <ArrowRight size={14} />
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Report Problem Modal */}
-      {isReporting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      {isReporting && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[var(--color-panel)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center p-5 border-b border-[var(--color-border)]">
               <h2 className="text-lg font-bold text-[var(--color-fg)]">Report a Problem</h2>
@@ -279,6 +292,21 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
                   className="w-full bg-[var(--color-panel-2)] border border-[var(--color-border)] rounded-xl px-4 py-2 text-[14px] text-[var(--color-fg)] focus:outline-none focus:border-[var(--color-accent)] transition"
                   placeholder="e.g., Abnormal vibration on P-101A"
                 />
+              </div>
+              
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-[12px] font-bold text-[var(--color-muted)] mb-1 uppercase tracking-wider">Severity</label>
+                  <select
+                    value={reportSeverity}
+                    onChange={(e) => setReportSeverity(e.target.value as Fault["severity"])}
+                    className="w-full h-[38px] bg-[var(--color-panel-2)] border border-[var(--color-border)] rounded-xl px-3 text-[14px] text-[var(--color-fg)] focus:outline-none focus:border-[var(--color-accent)] transition"
+                  >
+                    <option value="info">Info</option>
+                    <option value="warning">Warning</option>
+                    <option value="critical">Critical</option>
+                  </select>
+                </div>
               </div>
               
               <div>
@@ -318,7 +346,8 @@ export function FaultFeed({ faults, isAdmin }: { faults: Fault[]; isAdmin: boole
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

@@ -9,6 +9,6 @@ export const runtime = "nodejs";
 export async function POST() {
   resetStore();
   invalidateIndex();
-  globalThis.__sutradhar_compliance = undefined;
+  globalThis.__Nexus_compliance = undefined;
   return NextResponse.json({ ok: true, message: "Corpus reset to seed state" });
 }

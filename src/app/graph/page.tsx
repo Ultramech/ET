@@ -69,8 +69,8 @@ function GraphInner() {
     <div className="space-y-4">
       <SectionTitle
         icon={<Share2 size={18} />}
-        title="Unified Knowledge Graph"
-        desc="Every equipment tag, document, regulation, parameter and failure mode across the corpus — and how they connect. Search any of the thousands of entities; the canvas renders a focused, readable neighbourhood."
+        title="Knowledge Graph Explorer"
+        desc="Visually explore how your equipment, manuals, and safety regulations are all connected."
       />
 
       <div className="flex flex-wrap items-center gap-2">

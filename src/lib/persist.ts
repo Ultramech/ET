@@ -24,7 +24,7 @@ function resolveDir(): string {
     fs.accessSync(primary, fs.constants.W_OK);
     return primary;
   } catch {
-    const tmp = path.join("/tmp", "sutradhar-corpus");
+    const tmp = path.join("/tmp", "Nexus-corpus");
     try {
       fs.mkdirSync(tmp, { recursive: true });
       return tmp;

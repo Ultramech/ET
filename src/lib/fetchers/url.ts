@@ -8,7 +8,7 @@ import { extractText, getDocumentProxy } from "unpdf";
 // ---------------------------------------------------------------------------
 
 const MAX_BYTES = 40 * 1024 * 1024; // 40 MB safety cap
-const UA = "Mozilla/5.0 (compatible; SutradharBot/1.0; +industrial-knowledge)";
+const UA = "Mozilla/5.0 (compatible; NexusBot/1.0; +industrial-knowledge)";
 
 export interface FetchedDoc {
   url: string;

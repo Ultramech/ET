@@ -29,7 +29,7 @@ function resolveFile(): string {
     fs.accessSync(primary, fs.constants.W_OK);
     return path.join(primary, "users.json");
   } catch {
-    const tmp = path.join("/tmp", "sutradhar-data");
+    const tmp = path.join("/tmp", "Nexus-data");
     fs.mkdirSync(tmp, { recursive: true });
     return path.join(tmp, "users.json");
   }
@@ -62,7 +62,7 @@ function makeUser(
 
 declare global {
   // eslint-disable-next-line no-var
-  var __sutradhar_users: UserRecord[] | undefined;
+  var __Nexus_users: UserRecord[] | undefined;
 }
 
 function seedUsers(): UserRecord[] {
@@ -73,12 +73,12 @@ function seedUsers(): UserRecord[] {
 }
 
 function load(): UserRecord[] {
-  if (globalThis.__sutradhar_users) return globalThis.__sutradhar_users;
+  if (globalThis.__Nexus_users) return globalThis.__Nexus_users;
   try {
     if (fs.existsSync(FILE)) {
       const data = JSON.parse(fs.readFileSync(FILE, "utf-8")) as UserRecord[];
       if (Array.isArray(data) && data.length) {
-        globalThis.__sutradhar_users = data;
+        globalThis.__Nexus_users = data;
         return data;
       }
     }
@@ -86,14 +86,14 @@ function load(): UserRecord[] {
     console.error("[users] load failed:", (e as Error).message);
   }
   const seeded = seedUsers();
-  globalThis.__sutradhar_users = seeded;
+  globalThis.__Nexus_users = seeded;
   save();
   return seeded;
 }
 
 function save() {
   try {
-    fs.writeFileSync(FILE, JSON.stringify(globalThis.__sutradhar_users ?? [], null, 2), "utf-8");
+    fs.writeFileSync(FILE, JSON.stringify(globalThis.__Nexus_users ?? [], null, 2), "utf-8");
   } catch (e) {
     console.error("[users] save failed:", (e as Error).message);
   }
@@ -173,7 +173,7 @@ export function deleteUser(username: string, actor: string): { ok?: true; error?
   if (name === actor) return { error: "You cannot delete your own account" };
   if (u.role === "admin" && users.filter((x) => x.role === "admin").length === 1)
     return { error: "Cannot delete the last admin" };
-  globalThis.__sutradhar_users = users.filter((x) => x.username !== name);
+  globalThis.__Nexus_users = users.filter((x) => x.username !== name);
   save();
   return { ok: true };
 }

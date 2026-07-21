@@ -183,16 +183,16 @@ function Brand({ compact }: { compact?: boolean }) {
           boxShadow: "0 2px 8px rgba(26,115,232,0.35)",
         }}
       >
-        सू
+        N
       </div>
       {!compact && (
         <div className="leading-tight">
-          <div className="text-[13px] font-bold tracking-wide text-[var(--color-fg)]">Sutradhar</div>
-          <div className="text-[10px] font-medium text-[var(--color-muted)]">Operations Brain</div>
+          <div className="text-[20px] font-bold tracking-wide text-[var(--color-fg)]">Nexus</div>
+          {/* <div className="text-[10px] font-medium text-[var(--color-muted)]">The Unified Asset & Operations Brain</div> */}
         </div>
       )}
       {compact && (
-        <div className="text-[13px] font-bold text-[var(--color-fg)]">Sutradhar</div>
+        <div className="text-[13px] font-bold text-[var(--color-fg)]">Nexus</div>
       )}
     </Link>
   );

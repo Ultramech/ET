@@ -70,7 +70,7 @@ export const ENTITY_STYLE: Record<
   Unit: { color: "#5eead4", ring: "#14b8a6", glyph: "▦" },
 };
 
-// Safety-critical intents. If a query matches and grounding is weak, Sutradhar
+// Safety-critical intents. If a query matches and grounding is weak, Nexus
 // REFUSES rather than guesses — because this is a safety system, not a chatbot.
 export const SAFETY_INTENT = [
   /\bbypass\b/i,

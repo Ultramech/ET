@@ -20,7 +20,7 @@ export interface KnowledgeStore {
 
 declare global {
   // eslint-disable-next-line no-var
-  var __sutradhar_store: KnowledgeStore | undefined;
+  var __Nexus_store: KnowledgeStore | undefined;
 }
 
 function seedStore(): KnowledgeStore {
@@ -50,10 +50,10 @@ function hydrate(): KnowledgeStore {
 }
 
 export function getStore(): KnowledgeStore {
-  if (!globalThis.__sutradhar_store) {
-    globalThis.__sutradhar_store = hydrate();
+  if (!globalThis.__Nexus_store) {
+    globalThis.__Nexus_store = hydrate();
   }
-  return globalThis.__sutradhar_store;
+  return globalThis.__Nexus_store;
 }
 
 function toPersisted(s: KnowledgeStore): PersistedCorpus {
@@ -111,6 +111,6 @@ export function findDocBySourceUrl(url: string) {
 }
 
 export function resetStore() {
-  globalThis.__sutradhar_store = seedStore();
+  globalThis.__Nexus_store = seedStore();
   persist();
 }

@@ -13,12 +13,12 @@ export interface Session {
   exp: number; // unix seconds
 }
 
-export const SESSION_COOKIE = "sutradhar_session";
+export const SESSION_COOKIE = "Nexus_session";
 const SESSION_HOURS = 8;
 
 // Signing secret comes from the environment. The fallback keeps a keyless
 // clone bootable, but any real deployment must set AUTH_SECRET — we warn loudly.
-const SECRET = process.env.AUTH_SECRET || "sutradhar-demo-secret-change-me";
+const SECRET = process.env.AUTH_SECRET || "Nexus-demo-secret-change-me";
 if (!process.env.AUTH_SECRET) {
   console.warn("[auth] AUTH_SECRET not set — using an insecure development fallback. Set it in .env.local.");
 }

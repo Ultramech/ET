@@ -11,7 +11,7 @@ import type {
 //
 // A deliberately realistic, fictional plant. Documents live in the 7–12
 // disconnected systems the problem statement describes (DMS, CMMS, QMS, email).
-// The whole point of Sutradhar is that these were NEVER connected before — the
+// The whole point of Nexus is that these were NEVER connected before — the
 // central thread here is the crude charge pump P-101A and its recurring
 // mechanical-seal failures, a story that spans six document types and four
 // departments and that no single engineer had ever seen end-to-end.

@@ -1,7 +1,6 @@
-# सूत्रधार · Sutradhar — Unified Asset & Operations Brain
+# Nexus — Unified Asset & Operations Brain
 
-> _Sutradhar_ (सूत्रधार): "the one who holds the threads together." An
-> AI-powered **Industrial Knowledge Intelligence** platform that ingests the
+> **Nexus**: An AI-powered **Industrial Knowledge Intelligence** platform that ingests the
 > heterogeneous documents scattered across a plant's 7–12 disconnected systems
 > and makes their collective intelligence **queryable, cited, actionable, and
 > continuously updated — at the point of need, on any device.**
@@ -19,19 +18,22 @@ failure lived in a different system: three CMMS work orders, one inspection
 report, one near-miss incident report, an OEM manual limit, and a frustrated
 email thread. **No single engineer ever saw them together** — so the seals kept
 getting replaced while the real cause (a 0.35 mm shaft misalignment vs the OEM's
-0.05 mm limit) went unfixed. Sutradhar connects those threads automatically and
+0.05 mm limit) went unfixed. Nexus connects those threads automatically and
 surfaces the root cause, the compliance gap, and a proactive warning.
+
+Also features a real-time **Fault Feed** where field agents can report issues with severity classes (Info/Warning/Critical), automatically tracked to their login session, with a 30-day retained history of resolved faults to prevent recurring blind spots.
 
 ## What's inside (all six tracks from the brief)
 
 | Module | Route | Does |
 |---|---|---|
-| **Expert Copilot** | `/copilot` | RAG chat, **inline citations + confidence score**, refuses to guess on safety, voice input, mobile-first |
-| **Knowledge Graph** | `/graph` | Interactive force-directed graph of equipment, docs, regs, params, failure modes; focus + inspect |
+| **Expert Knowledge Copilot** | `/copilot` | RAG chat, **inline citations + confidence score**, refuses to guess on safety, voice input, mobile-first |
+| **Knowledge Graph Explorer** | `/graph` | Interactive force-directed graph of equipment, docs, regs, params, failure modes; focus + inspect |
 | **Maintenance & RCA** | `/maintenance` | Agent fuses work orders + inspections + incidents into a **cross-system 5-Whys** |
-| **Compliance** | `/compliance` | OISD / PESO / Factory Act mapped to real plant state; **gap matrix + one-click audit evidence pack** |
+| **Quality & Compliance** | `/compliance` | OISD / PESO / Factory Act mapped to real plant state; **gap matrix + one-click audit evidence pack** |
 | **Lessons Learned** | `/lessons` | Detects **recurring failure signatures** and pushes proactive warnings |
-| **Universal Ingestion** | `/ingest` | Paste/upload any doc → entities extracted → **auto-linked into the graph live** |
+| **Universal Ingestion** | `/ingest` | Paste/upload any PDF/Spreadsheet → entities extracted → **auto-linked into the graph live** |
+| **Document Library** | `/documents` | Browse all unified files in one place — manuals, SOPs, and inspection reports |
 
 ## Run it
 
@@ -59,7 +61,7 @@ admin-only at the API level too (401/403 JSON for unauthorised calls).
 ## The differentiator: Knowledge Gap Register (`/gaps`)
 
 The PS's "knowledge cliff": 25% of experienced engineers retire within a decade
-and their undocumented knowledge goes with them. Sutradhar attacks this head-on:
+and their undocumented knowledge goes with them. Nexus attacks this head-on:
 
 1. Every question the copilot **cannot** answer from the corpus is logged as a
    knowledge gap automatically (with asker + times-asked counter).

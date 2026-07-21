@@ -71,11 +71,11 @@ function LoginForm() {
       <div className="w-full max-w-sm space-y-4">
         <div className="text-center">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-emerald-400 text-xl font-bold text-black">
-            सू
+            N
           </div>
-          <h1 className="mt-3 text-xl font-semibold tracking-tight">Sutradhar</h1>
+          <h1 className="mt-3 text-xl font-semibold tracking-tight">Nexus</h1>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
-            Unified Asset &amp; Operations Brain · Bharat Refinery Ltd, Vadodara
+            The Unified Asset & Operations Brain · Bharat Refinery Ltd, Vadodara
           </p>
         </div>
 

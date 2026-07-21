@@ -131,15 +131,13 @@ export default function GapsPage() {
                   >
                     <PenLine size={13} /> I know this
                   </button>
-                  {isAdmin && (
-                    <button
-                      onClick={() => dismiss(g.id)}
-                      title="Dismiss gap"
-                      className="rounded-lg border border-[var(--color-border)] p-1.5 text-[var(--color-muted)] transition hover:border-rose-400/40 hover:text-rose-700 dark:text-rose-300"
-                    >
-                      <Trash2 size={13} />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => dismiss(g.id)}
+                    title="Dismiss gap"
+                    className="rounded-lg border border-[var(--color-border)] p-1.5 text-[var(--color-muted)] transition hover:border-rose-400/40 hover:text-rose-700 dark:text-rose-300"
+                  >
+                    <Trash2 size={13} />
+                  </button>
                 </div>
               </div>
 

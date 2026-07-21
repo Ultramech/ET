@@ -92,7 +92,7 @@ export default function IngestPage() {
       <SectionTitle
         icon={<Upload size={18} />}
         title="Universal Document Ingestion"
-        desc="Paste or upload any document. Sutradhar chunks it, extracts equipment tags, parameters, regulations and people using the industrial ontology, and auto-links them into the existing knowledge graph in real time."
+        desc="Upload any PDF, manual, or spreadsheet. Our AI automatically reads the text, identifies equipment tags and safety regulations, and connects them into your knowledge graph."
       />
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -310,7 +310,7 @@ function DrawingIngest() {
       <SectionTitle
         icon={<ScanEye size={18} />}
         title="Digitise an Engineering Drawing (P&ID)"
-        desc="Upload a P&ID or any scanned engineering drawing. Multimodal vision reads the equipment tags, instruments and line topology off the sheet and folds them straight into the knowledge graph."
+        desc="Upload a P&ID or any scanned engineering drawing. Our AI reads the equipment tags, instruments, and pipe connections straight off the sheet and adds them directly to the knowledge graph."
       />
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="p-4">

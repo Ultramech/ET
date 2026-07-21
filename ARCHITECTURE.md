@@ -1,6 +1,6 @@
-# Sutradhar — Architecture
+# Nexus — Architecture
 
-Sutradhar is the "Unified Asset & Operations Brain": one queryable, cited,
+Nexus is the "Unified Asset & Operations Brain": one queryable, cited,
 continuously-updated knowledge layer over the 7–12 disconnected document systems
 a large plant runs on.
 

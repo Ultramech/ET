@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sutradhar — core domain types for the Unified Asset & Operations Brain
+// Nexus — core domain types for the Unified Asset & Operations Brain
 // ---------------------------------------------------------------------------
 
 /** The kinds of source documents an asset-intensive plant actually holds. */

@@ -7,7 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sutradhar · Unified Asset & Operations Brain",
+  title: "Nexus · Unified Asset & Operations Brain",
   description:
     "AI-powered Industrial Knowledge Intelligence — ingests heterogeneous plant documents into one queryable, cited, continuously-updated operations brain.",
 };

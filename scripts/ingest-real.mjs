@@ -79,7 +79,7 @@ async function pool(items, size, worker) {
   await Promise.all(runners);
 }
 
-console.log(`\n🧩 Ingesting ${urls.length} real documents into Sutradhar (concurrency ${CONCURRENCY})`);
+console.log(`\n🧩 Ingesting ${urls.length} real documents into Nexus (concurrency ${CONCURRENCY})`);
 console.log(`   target: ${BASE}\n`);
 const t0 = Date.now();
 await pool(urls, CONCURRENCY, ingest);

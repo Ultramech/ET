@@ -4,13 +4,13 @@ import { getStore, persist } from "@/lib/store";
 import { revalidatePath } from "next/cache";
 import type { Fault } from "@/lib/types";
 
-export async function reportFault(title: string, description: string, reportedBy: string = "System") {
+export async function reportFault(title: string, description: string, reportedBy: string = "System", severity: Fault["severity"] = "warning") {
   const store = getStore();
   const newFault: Fault = {
     id: `F-${Date.now()}`,
     title,
     description,
-    severity: "warning", // Default severity for user-reported
+    severity,
     status: "pending",
     timestamp: Date.now(),
     reportedBy,

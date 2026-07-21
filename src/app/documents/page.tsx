@@ -81,7 +81,7 @@ function DocsInner() {
       <SectionTitle
         icon={<FileText size={18} />}
         title="Document Corpus"
-        desc="The heterogeneous sources Sutradhar has unified — P&IDs, SOPs, work orders, inspections, incidents, OEM manuals, regulations and email. Including messy scanned and handwritten records."
+        desc="The heterogeneous sources Nexus has unified — P&IDs, SOPs, work orders, inspections, incidents, OEM manuals, regulations and email. Including messy scanned and handwritten records."
       />
 
       <div className="flex flex-wrap gap-1.5">

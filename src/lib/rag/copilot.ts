@@ -116,7 +116,7 @@ export async function answerQuery(query: string): Promise<CopilotAnswer> {
     .join("\n\n");
 
   const system =
-    "You are Sutradhar, an industrial knowledge copilot for a refinery. Answer ONLY from the provided sources. " +
+    "You are Nexus, an industrial knowledge copilot for a refinery. Answer ONLY from the provided sources. " +
     "Be concise and operational — a field technician or engineer is reading on a phone. " +
     "Cite sources inline using the [[n]] markers that precede each source. " +
     "If the sources conflict or one is superseded, say which one is current. " +

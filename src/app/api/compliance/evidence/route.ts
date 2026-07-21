@@ -89,7 +89,7 @@ export async function GET(req: NextRequest) {
   <h1>Compliance Evidence Pack</h1>
   <div class="meta">
     ${esc(PLANT.name)} · ${esc(PLANT.unit)} · ${esc(PLANT.capacity)}<br>
-    Generated ${now.toLocaleString("en-IN")} by ${esc(generatedBy)} · Sutradhar Unified Asset &amp; Operations Brain
+    Generated ${now.toLocaleString("en-IN")} by ${esc(generatedBy)} · Nexus Unified Asset &amp; Operations Brain
   </div>
 </header>
 <div class="summary">
@@ -100,13 +100,13 @@ export async function GET(req: NextRequest) {
 </div>
 ${rows}
 <div class="sign">
-  <div>Prepared by (Sutradhar operator)</div>
+  <div>Prepared by (Nexus operator)</div>
   <div>Reviewed by (HSE / QA)</div>
   <div>Approved by (Plant Manager)</div>
 </div>
 <footer>
   Every finding above is grounded in the plant's connected document corpus; evidence citations reference
-  controlled documents retrievable in Sutradhar. Auto-generated — verify before statutory submission.
+  controlled documents retrievable in Nexus. Auto-generated — verify before statutory submission.
 </footer>
 </body>
 </html>`;

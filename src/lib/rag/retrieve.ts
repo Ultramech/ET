@@ -46,7 +46,7 @@ interface Index {
 }
 declare global {
   // eslint-disable-next-line no-var
-  var __sutradhar_index: Index | undefined;
+  var __Nexus_index: Index | undefined;
 }
 
 function buildIndex(): Index {
@@ -75,15 +75,15 @@ function buildIndex(): Index {
 
 function getIndex(): Index {
   const store = getStore();
-  if (!globalThis.__sutradhar_index || globalThis.__sutradhar_index.size !== store.documents.length) {
-    globalThis.__sutradhar_index = buildIndex();
+  if (!globalThis.__Nexus_index || globalThis.__Nexus_index.size !== store.documents.length) {
+    globalThis.__Nexus_index = buildIndex();
   }
-  return globalThis.__sutradhar_index;
+  return globalThis.__Nexus_index;
 }
 
 /** Invalidate the cached index (call after mutating the corpus mid-request). */
 export function invalidateIndex() {
-  globalThis.__sutradhar_index = undefined;
+  globalThis.__Nexus_index = undefined;
 }
 
 export interface Retrieved {
