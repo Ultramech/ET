@@ -10,7 +10,7 @@
 
 <br/>
 
-> **Indian plants run on 7–12 disconnected document systems.**
+> **Indian plants run on Several disconnected document systems.**
 > Engineers waste ~35% of their time hunting across CMMS, manuals, SOPs, and incident reports.
 > **Nexus unifies all of that — in under 3 seconds, from any device.**
 
@@ -77,7 +77,7 @@ Nexus connects those threads automatically. It ingests every document type a pla
 
 | Problem | Today | Nexus |
 |---|---|---|
-| Time to find an answer | 20–40 min (7 systems) | < 3 seconds |
+| Time to find an answer | 20–40 min (Several systems) | < 3 seconds |
 | Cross-document root cause | 2–3 engineer-days | Instant, cited |
 | Compliance audit prep | 1–2 weeks | One-click evidence pack |
 | Retiring expert knowledge | Lost forever | Captured, graph-linked, searchable |
