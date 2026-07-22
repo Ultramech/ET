@@ -1,154 +1,218 @@
-# Nexus — Unified Asset & Operations Brain
+<div align="center">
 
-> **Nexus**: An AI-powered **Industrial Knowledge Intelligence** platform that ingests the
-> heterogeneous documents scattered across a plant's 7–12 disconnected systems
-> and makes their collective intelligence **queryable, cited, actionable, and
-> continuously updated — at the point of need, on any device.**
+<img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=32&pause=1000&color=3B82F6&background=00000000&center=true&vCenter=true&width=900&lines=Nexus;Unified+Asset+%26+Operations+Brain;7+Disconnected+Systems+%E2%86%92+One+Brain;AI-Powered+Industrial+Knowledge+Intelligence" alt="Nexus Typing SVG" />
 
-Built for the challenge _"AI for Industrial Knowledge Intelligence."_ Demo plant:
-**Bharat Refinery Ltd, Vadodara — Crude Distillation Unit (CDU-1)** (fictional,
-realistic Indian-refinery corpus).
+<br/>
 
-**🔗 Live Demo:** [nexus-et.vercel.app](https://nexus-et.vercel.app)
-**📺 Pitch Video:** [Watch on Google Drive](https://drive.google.com/file/d/18iPAkHn5JLbjVE_CbpeAOT29zypSQSda/view?usp=sharing)
+### 🎥 Watch the Demo
+
+[![Google Drive Demo](https://img.shields.io/badge/%F0%9F%8E%AC%20WATCH%20DEMO-Google%20Drive-4285F4?style=for-the-badge&labelColor=1a1a1a&logo=googledrive)](https://drive.google.com/file/d/18iPAkHn5JLbjVE_CbpeAOT29zypSQSda/view?usp=sharing)
+
+<br/>
+
+> **Indian plants run on 7–12 disconnected document systems.**
+> Engineers waste ~35% of their time hunting across CMMS, manuals, SOPs, and incident reports.
+> **Nexus unifies all of that — in under 3 seconds, from any device.**
+
+<br/>
+
+### 📹 **[Watch the video demo](https://drive.google.com/file/d/18iPAkHn5JLbjVE_CbpeAOT29zypSQSda/view?usp=sharing)** — See Nexus in action
+
+<br/>
+
+### ⬇️ Evaluating this project? Start here.
+
+**Live App → [nexus-et.vercel.app](https://nexus-et.vercel.app/login)**
+
+| Account | Username | Password | Access |
+|:---:|:---:|:---:|:---|
+| Field Engineer | `user` | `user` | Copilot · Graph · Maintenance · Compliance · Lessons |
+| Knowledge Manager | `admin` | `admin` | Everything above + Ingest · Admin Dashboard · Team |
+
+</div>
 
 ---
 
-## The core story it tells
+## 🏆 Try It in 3 Minutes
 
-Pump **P-101A** failed its mechanical seal **three times in 28 months**. Each
-failure lived in a different system: three CMMS work orders, one inspection
-report, one near-miss incident report, an OEM manual limit, and a frustrated
-email thread. **No single engineer ever saw them together** — so the seals kept
-getting replaced while the real cause (a 0.35 mm shaft misalignment vs the OEM's
-0.05 mm limit) went unfixed. Nexus connects those threads automatically and
-surfaces the root cause, the compliance gap, and a proactive warning.
+### Step 1 — Login
+Go to **[nexus-et.vercel.app/login](https://nexus-et.vercel.app/login)** → sign in as `user` / `user`.
 
-Also features a real-time **Fault Feed** where field agents can report issues with severity classes (Info/Warning/Critical), automatically tracked to their login session, with a 30-day retained history of resolved faults to prevent recurring blind spots.
+### Step 2 — Ask the Copilot (`/copilot`)
+| Try asking | What you'll see |
+|---|---|
+| `"Why did P-101A fail three times?"` | Cross-doc synthesis: work orders + inspection + OEM limit |
+| `"What does OISD-118 say about pump isolation?"` | Regulation-grounded answer, refuses to help bypass it |
+| `"Seal flush plan for P-101A?"` | Cited answer with source document + confidence score |
 
-## What's inside (all six tracks from the brief)
+> **No API key needed.** The offline fallback (BM25 + entity retrieval) runs the full demo without any key.
+
+### Step 3 — Explore the Knowledge Graph (`/graph`)
+Find **P-101A** — you'll see three CMMS work orders, one inspection report, and one OEM limit all converging on a single node. No engineer assembled this. Nexus did it automatically.
+
+### Step 4 — Run an RCA (`/maintenance`)
+Trigger Root Cause Analysis on P-101A. Nexus fuses 4 document types into a **5-Whys chain with cited evidence** at every step. Root cause: 0.35 mm shaft misalignment vs 0.05 mm OEM limit.
+
+### Step 5 — Export an Evidence Pack (`/compliance`)
+One click → print-ready audit report with OISD / PESO / Factory Act gap findings, citations, and sign-off blocks.
+
+### What Judges Should Specifically Look For
+1. **Cross-document synthesis** — P-101A RCA pulls from 5 different document types automatically
+2. **Citation on every answer** — source document + locator on every Copilot response
+3. **Safety refusal guardrail** — ask *"how do I bypass the P-101 interlock"* and watch it decline
+4. **Live knowledge graph** — ingest a new doc (admin) and watch it auto-link into the graph
+5. **Knowledge gap loop** — capture a gap answer → it becomes a searchable, cited document
+
+---
+
+## What Is Nexus?
+
+> **The problem:** Pump P-101A failed its mechanical seal **three times in 28 months**. Each failure lived in a different system — three work orders, one inspection report, one near-miss, an OEM limit, an email thread. **No single engineer ever saw them together.** So the seals kept being replaced while the real cause (shaft misalignment) went unfixed.
+
+Nexus connects those threads automatically. It ingests every document type a plant produces, builds a typed knowledge graph across all of them, and makes the collective intelligence **queryable, cited, and actionable in seconds** — with no hallucination.
+
+---
+
+## Why This Matters
+
+| Problem | Today | Nexus |
+|---|---|---|
+| Time to find an answer | 20–40 min (7 systems) | < 3 seconds |
+| Cross-document root cause | 2–3 engineer-days | Instant, cited |
+| Compliance audit prep | 1–2 weeks | One-click evidence pack |
+| Retiring expert knowledge | Lost forever | Captured, graph-linked, searchable |
+| Hallucination risk | High (generic RAG) | Zero — answers cited or refused |
+
+---
+
+## Architecture
+
+```
+   Heterogeneous plant sources (P&IDs · SOPs · Work Orders · Inspections · OEM Manuals · Regs)
+                                        │
+                           Universal Ingestion Pipeline
+                    (OCR · P&ID Vision · Chunking · Entity extraction · Auto-linking)
+                                        │
+              ┌─────────────────────────┴──────────────────────────┐
+              │  Knowledge Graph              Vector Store          │
+              │  (typed nodes + edges)        (BM25 + embeddings)   │
+              └─────────────────────────┬──────────────────────────┘
+                                        │  Hybrid Retrieval (BM25 + RRF)
+                                        │
+              ┌─────────────────────────┴──────────────────────────┐
+              │   Expert Copilot · RCA Agent · Compliance Agent     │
+              │   Lessons Engine · Knowledge Gap Register           │
+              └─────────────────────────┬──────────────────────────┘
+                                        │
+              Mobile field copilot · Desktop graph explorer · Admin ingest
+```
+
+---
+
+## Six Modules
 
 | Module | Route | Does |
 |---|---|---|
-| **Expert Knowledge Copilot** | `/copilot` | RAG chat, **inline citations + confidence score**, refuses to guess on safety, voice input, mobile-first |
-| **Knowledge Graph Explorer** | `/graph` | Interactive force-directed graph of equipment, docs, regs, params, failure modes; focus + inspect |
-| **Maintenance & RCA** | `/maintenance` | Agent fuses work orders + inspections + incidents into a **cross-system 5-Whys** |
-| **Quality & Compliance** | `/compliance` | OISD / PESO / Factory Act mapped to real plant state; **gap matrix + one-click audit evidence pack** |
-| **Lessons Learned** | `/lessons` | Detects **recurring failure signatures** and pushes proactive warnings |
-| **Universal Ingestion** | `/ingest` | Paste/upload any PDF/Spreadsheet → entities extracted → **auto-linked into the graph live** |
-| **Document Library** | `/documents` | Browse all unified files in one place — manuals, SOPs, and inspection reports |
+| **Expert Knowledge Copilot** | `/copilot` | RAG chat — inline citations + confidence, safety refusal, voice input |
+| **Knowledge Graph** | `/graph` | Force-directed graph: equipment, docs, regs, failure modes, people |
+| **Maintenance & RCA** | `/maintenance` | Cross-system 5-Whys with cited evidence across 5 doc types |
+| **Quality & Compliance** | `/compliance` | OISD / PESO / Factory Act gap matrix + one-click audit evidence pack |
+| **Lessons Learned** | `/lessons` | Recurring failure signature detection → proactive warnings |
+| **Universal Ingestion** | `/ingest` | PDF / URL / P&ID image → entity-extract → auto-linked into graph live |
 
-## Run it
+---
+
+## AI Stack
+
+| Layer | Always On | With `GEMINI_API_KEY` |
+|---|---|---|
+| Retrieval | BM25 + entity-tag boosting (deterministic) | + Gemini semantic embeddings + RRF |
+| Copilot | Extractive answers, fully cited | + Gemini 2.5 Flash synthesis |
+| RCA / Compliance | Rule-based graph traversal | + Agentic reasoning with thinking-budget |
+| Ingestion | Regex ontology entity extraction | + P&ID vision (Gemini reads drawings) |
+
+The sidebar badge shows **LLM** vs **Fallback** live.
+
+---
+
+## Getting Started
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
+npm run dev        # http://localhost:3000 — no key needed
 ```
 
-## Roles & login
-
-The app is split into a **user side** and an **admin side** behind a signed-cookie
-login (`src/proxy.ts` gates every page and API). Real accounts live in a
-scrypt-hashed user store (`src/lib/users.ts`, persisted to `data/users.json` —
-the swap-point for Supabase/Postgres) with **self-service signup** (new accounts
-join as users) and full admin team management (create / promote / delete).
-
-| Account | Credentials | Sees |
-|---|---|---|
-| **Field Engineer (user)** | `user` / `user` | Overview, Copilot, Graph, Maintenance & RCA, Compliance (+ evidence pack), Lessons, Knowledge Gaps (view + capture), Documents (read-only) |
-| **Knowledge Manager (admin)** | `admin` / `admin` | Everything above **plus** Admin Dashboard (corpus health, AI engine, team & roles, rebuild graph / backfill embeddings / reset demo), Ingest (paste, upload, URL, P&ID drawing digitisation), document deletion, gap dismissal |
-
-Ingestion, vision, corpus maintenance, user management and deletions are
-admin-only at the API level too (401/403 JSON for unauthorised calls).
-
-## The differentiator: Knowledge Gap Register (`/gaps`)
-
-The PS's "knowledge cliff": 25% of experienced engineers retire within a decade
-and their undocumented knowledge goes with them. Nexus attacks this head-on:
-
-1. Every question the copilot **cannot** answer from the corpus is logged as a
-   knowledge gap automatically (with asker + times-asked counter).
-2. Anyone who holds that knowledge clicks **"I know this"** and writes it down.
-3. The capture is ingested through the normal pipeline — entity-extracted,
-   graph-linked, embedded — and the gap closes.
-4. The next person who asks gets a **cited, high-confidence answer** from the
-   captured document. The brain learns from its own blind spots.
-
-Also: one-click **audit evidence pack** (`/api/compliance/evidence`) — a
-print-ready compliance report with findings, evidence citations and sign-off
-blocks, straight from the live gap matrix.
-
-No keys required — it runs on a **deterministic offline fallback** (BM25 + entity
-retrieval, extractive answers, rule-based RCA) so the demo never breaks.
-
-**To enable real AI** — Gemini synthesis, agentic RCA/compliance reasoning,
-semantic embeddings and **multimodal P&ID vision**:
-
+**To enable Gemini AI:**
 ```bash
 cp .env.example .env.local
-# set GEMINI_API_KEY=...        (get one at aistudio.google.com)
+# set GEMINI_API_KEY=...   (aistudio.google.com)
+# set AUTH_SECRET=...      (any random 256-bit string)
 ```
 
-Also works with `AI_GATEWAY_API_KEY` (Vercel AI Gateway). The sidebar badge shows
-**LLM** vs **Fallback** live; `/api/stats` reports the active provider/model.
-
-## The AI backend (what's real)
-
-- **Multi-provider AI layer** (`src/lib/ai/client.ts`): Gemini → AI Gateway →
-  offline fallback. Thinking-budget control keeps the copilot at ~2–3 s while RCA
-  and compliance spend a reasoning budget. Vision and batch-embeddings call
-  Gemini directly (robust against AI-SDK edge cases).
-- **Hybrid retrieval** (`src/lib/rag/retrieve.ts`): cached BM25 inverted index +
-  semantic vector search fused with Reciprocal Rank Fusion. Scales to 10 k+
-  chunks; degrades to pure BM25 without a key.
-- **Agentic RCA & Compliance**: reasoned by the LLM over the *actual* retrieved
-  records (5-Whys with cited evidence; regulatory gap analysis) — not scripted.
-- **P&ID / drawing vision** (`src/lib/vision/pid.ts`, `POST /api/vision`): Gemini
-  reads an engineering drawing and extracts equipment tags, instruments and line
-  topology straight into the knowledge graph.
-
-## Ingesting real documents
-
-The app ships with a seed refinery plus a script that ingests **real public
-industrial PDFs** (OISD standards, U.S. CSB incident investigations, ~200
-engineering references) through the exact runtime pipeline — every doc keeps its
-`sourceUrl`.
-
+**Ingest real public documents:**
 ```bash
-# with `npm run dev` running in another terminal:
-npm run ingest:real          # fetch + extract + graph-link ~240 real docs
-npm run reindex              # rebuild the graph with current extractors
-npm run embed                # backfill embeddings (seed docs; more as quota allows)
+npm run ingest:real   # ~240 real OISD + CSB PDFs
+npm run reindex       # rebuild graph
+npm run embed         # backfill embeddings (needs GEMINI_API_KEY)
 ```
 
-You can also ingest any single URL at runtime: `POST /api/ingest/url { "url": … }`,
-paste/upload on `/ingest`, or drop a P&ID image at `POST /api/vision`.
+---
 
-## How it maps to the judging criteria
+## Tech Stack
 
-- **Innovation (25%)** — the unified knowledge graph + cross-document RCA is the
-  differentiator vs generic "chat-over-PDF"; version-conflict reconciliation and
-  a hard safety-refusal guardrail are novel for this space.
-- **Business Impact (25%)** — reclaims the ~35% of hours lost to searching,
-  attacks the 18–22% of downtime from fragmented context, captures retiring
-  experts' tacit knowledge, and makes audits evidence-ready.
-- **Technical Excellence (20%)** — domain ontology extraction across 8 doc types,
-  hybrid retrieval, graph linkage, cited/confidence-scored RAG, agentic RCA.
-- **Scalability (15%)** — clean prototype→production interface swap (see
-  `ARCHITECTURE.md`); ingestion compounds the graph automatically.
-- **User Experience (15%)** — mobile bottom-nav + voice for field techs, desktop
-  graph explorer for engineers, zero-hallucination trust model.
+**Next.js 16** (App Router) · **React 19** · **TypeScript** · **Tailwind CSS v4** · **Vercel AI SDK v4** · `@ai-sdk/google` · Custom SVG force-directed graph · Web Speech API · Vercel deploy
 
-## Edge cases handled (beyond the brief)
+---
 
-Superseded/conflicting document versions · safety-critical refusal (won't help
-bypass a seal flush / interlock) · "I don't know" on weak grounding · equipment-tag
-disambiguation · scanned + **handwritten** + Hindi/English mixed records ·
-audit-trail-ready citations on every answer · offline reliability.
+## Environment Variables
 
-## Stack
+| Variable | Default | Purpose |
+|---|---|---|
+| `GEMINI_API_KEY` | _(blank)_ | Gemini key — empty = offline fallback |
+| `Nexus_MODEL` | `gemini-2.5-flash` | Model for synthesis, RCA, vision |
+| `AUTH_SECRET` | — | HMAC-SHA256 session signing secret |
+| `AI_GATEWAY_API_KEY` | _(blank)_ | Vercel AI Gateway (text + embeddings) |
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · Vercel AI SDK +
-AI Gateway · custom SVG force-directed graph. Deployable to Vercel as-is.
+---
 
-See **`ARCHITECTURE.md`** for the system diagram and the prototype↔production map.
+## Roles & Login
+
+| Role | Credentials | Access |
+|---|---|---|
+| **Field Engineer** | `user` / `user` | Copilot, Graph, Maintenance, Compliance, Lessons, Gaps, Documents |
+| **Knowledge Manager** | `admin` / `admin` | Everything above + Ingest, Admin Dashboard, team management |
+
+Auth is signed-cookie sessions with scrypt-hashed user store (`data/users.json` → Postgres swap-point).
+
+---
+
+## Build Status
+
+| Phase | Status |
+|---|:---:|
+| Auth gate + role-based access | ✅ |
+| Seed corpus — Bharat Refinery Ltd, CDU-1 (8 doc types) | ✅ |
+| BM25 hybrid retrieval + ontology entity extraction | ✅ |
+| Expert Copilot — RAG + citations + safety refusal | ✅ |
+| Knowledge Graph Explorer — force-directed SVG | ✅ |
+| Cross-document RCA — 5-Whys with cited evidence | ✅ |
+| Compliance gap matrix + one-click evidence pack | ✅ |
+| Lessons Learned — recurring failure signatures | ✅ |
+| Universal Ingestion — paste / upload / URL / P&ID vision | ✅ |
+| Knowledge Gap Register — self-healing capture loop | ✅ |
+| Real-time Fault Feed (Info / Warning / Critical) | ✅ |
+| Admin Dashboard + team management | ✅ |
+| Gemini agentic RCA + compliance reasoning | ✅ |
+| P&ID computer vision via Gemini | ✅ |
+| Production Neo4j / pgvector swap | 🔲 |
+| SSO/OIDC per-plant auth | 🔲 |
+
+---
+
+<div align="center">
+
+**Nexus — Turning every plant's scattered documents into one queryable brain.**
+
+Built for the AI for Industrial Knowledge Intelligence challenge.
+
+</div>
