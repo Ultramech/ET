@@ -2,6 +2,7 @@ import type { RcaResult, Document } from "../types";
 import { getStore } from "../store";
 import { llmObject, caps } from "../ai/client";
 import { z } from "zod";
+import { retrieve } from "./retrieve";
 
 // ---------------------------------------------------------------------------
 // Maintenance Intelligence & RCA. Gathers every record that touches an asset —
@@ -153,4 +154,67 @@ export function rcaCandidates() {
         .filter((e) => e.source === n.id && e.type === "EXHIBITS")
         .map((e) => e.target),
     }));
+}
+
+export async function runFaultRca(faultId: string): Promise<RcaResult | null> {
+  const store = getStore();
+  const fault = store.faults?.find(f => f.id === faultId);
+  if (!fault) return null;
+
+  const query = `${fault.title}. ${fault.description}`;
+  const items = await retrieve(query, 10);
+  
+  const relevant = Array.from(new Set(items.map(i => i.doc)));
+  const connectedSources = relevant.map(d => d.id);
+  const validIds = new Set(connectedSources);
+
+  if (caps().llm) {
+    const evidence = relevant
+      .map(
+        (d) =>
+          `[${d.id}] ${d.type} — ${d.title} (${d.date})\n` +
+          d.chunks.slice(0, 4).map((c) => c.text).join(" ")
+      )
+      .join("\n\n")
+      .slice(0, 12000);
+
+    const out = await llmObject({
+      system:
+        "You are a senior reliability engineer performing a rigorous Root Cause Analysis on a plant fault. " +
+        "Use ONLY the maintenance records provided. Build a genuine 5-Whys chain that drills from symptom to true root cause. " +
+        "For each step cite the supporting document ids exactly as bracketed (e.g. DOC-WO-2023-0456). " +
+        "Recommend a permanent corrective action.",
+      prompt: `FAULT REPORT:\nTitle: ${fault.title}\nDescription: ${fault.description}\n\nRECORDS:\n${evidence}`,
+      schema: RcaSchema,
+      timeoutMs: 60000,
+      thinkingBudget: 3072,
+    });
+
+    if (out) {
+      return {
+        problem: out.problem,
+        equipmentId: fault.title.split(" ").slice(-1)[0] || "Unknown", 
+        whys: out.whys.map((w) => ({
+          question: w.question,
+          answer: w.answer,
+          evidence: w.evidence.filter((e) => validIds.has(e)),
+        })),
+        rootCause: out.rootCause,
+        recommendation: out.recommendation,
+        confidence: Math.min(0.97, Math.round(out.confidence * 100) / 100),
+        connectedSources,
+      };
+    }
+  }
+
+  // fallback if no LLM
+  return {
+    problem: fault.title,
+    equipmentId: fault.title.split(" ").slice(-1)[0] || "Unknown",
+    whys: [{ question: "What happened?", answer: fault.description, evidence: [] }],
+    rootCause: "Requires LLM for deep analysis",
+    recommendation: "Investigate further",
+    confidence: 0.5,
+    connectedSources,
+  };
 }

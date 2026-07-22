@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStore, persist } from "@/lib/store";
+import { getStore, warmStore, persist } from "@/lib/store";
 import { invalidateIndex } from "@/lib/rag/retrieve";
 
 export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
+  await warmStore();
   const store = getStore();
   const id = req.nextUrl.searchParams.get("id");
   if (id) {

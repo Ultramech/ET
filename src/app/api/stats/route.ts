@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { getStore } from "@/lib/store";
+import { getStore, warmStore } from "@/lib/store";
 import { caps } from "@/lib/ai/client";
 import { PLANT } from "@/lib/data/seed";
 
 export const runtime = "nodejs";
 
 export async function GET() {
+  await warmStore();
   const store = getStore();
   const byType: Record<string, number> = {};
   for (const d of store.documents) byType[d.type] = (byType[d.type] ?? 0) + 1;

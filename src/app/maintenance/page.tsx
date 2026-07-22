@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { RcaResult } from "@/lib/types";
 import { Card, Badge, SectionTitle } from "@/components/ui";
 import { Wrench, Play, GitBranch, Target, CheckCircle2, FileText, Loader2 } from "lucide-react";
@@ -12,11 +13,14 @@ interface Candidate {
   failures: string[];
 }
 
-export default function MaintenancePage() {
+function MaintenanceContent() {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [active, setActive] = useState<string | null>(null);
   const [rca, setRca] = useState<RcaResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const eq = searchParams.get("equipment");
+  const faultId = searchParams.get("faultId");
 
   useEffect(() => {
     fetch("/api/rca")
@@ -24,13 +28,41 @@ export default function MaintenancePage() {
       .then((d) => setCandidates(d.candidates ?? []));
   }, []);
 
+  useEffect(() => {
+    if (eq && !active && !loading && !rca) {
+      run(eq);
+    } else if (faultId && !active && !loading && !rca) {
+      runFault(faultId);
+    }
+  }, [eq, faultId, active, loading, rca]);
+
   async function run(id: string) {
     setActive(id);
     setLoading(true);
     setRca(null);
-    const res = await fetch(`/api/rca?equipment=${encodeURIComponent(id)}`);
-    const data = await res.json();
-    setRca(data);
+    try {
+      const res = await fetch(`/api/rca?equipment=${encodeURIComponent(id)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unknown error occurred");
+      setRca(data);
+    } catch (e: any) {
+      setRca({ problem: `RCA Failed: ${e.message}`, equipmentId: id, rootCause: "Unable to determine root cause due to an error.", recommendation: "Verify the equipment ID exists in the knowledge graph.", whys: [], confidence: 0, connectedSources: [] });
+    }
+    setLoading(false);
+  }
+
+  async function runFault(id: string) {
+    setActive(id);
+    setLoading(true);
+    setRca(null);
+    try {
+      const res = await fetch(`/api/rca?faultId=${encodeURIComponent(id)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unknown error occurred");
+      setRca(data);
+    } catch (e: any) {
+      setRca({ problem: `RCA Failed: ${e.message}`, equipmentId: "Fault Analysis", rootCause: "Unable to determine root cause due to an error.", recommendation: "Check if fault exists.", whys: [], confidence: 0, connectedSources: [] });
+    }
     setLoading(false);
   }
 
@@ -143,5 +175,19 @@ export default function MaintenancePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MaintenancePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center p-10 text-[var(--color-muted)]">
+          <Loader2 className="animate-spin" size={24} />
+        </div>
+      }
+    >
+      <MaintenanceContent />
+    </Suspense>
   );
 }

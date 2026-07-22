@@ -7,6 +7,7 @@ import type { Fault } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { reportFault, approveFault, resolveFault, requestResolveFault, denyResolveFault } from "@/app/actions";
 import { Badge } from "@/components/ui";
+import { useRouter } from "next/navigation";
 
 function formatTimeAgo(ts: number) {
   const diff = Date.now() - ts;
@@ -22,6 +23,7 @@ export function FaultFeed({ faults, isAdmin, currentUser }: { faults: Fault[]; i
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedFault, setSelectedFault] = useState<Fault | null>(null);
   const [isReporting, setIsReporting] = useState(false);
+  const router = useRouter();
 
   // Form state
   const [reportTitle, setReportTitle] = useState("");
@@ -194,8 +196,9 @@ export function FaultFeed({ faults, isAdmin, currentUser }: { faults: Fault[]; i
         )}
         <button 
           onClick={() => setIsReporting(true)}
-          className="text-[12px] font-medium px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white hover:opacity-90 transition w-full max-w-[200px]"
+          className="group flex items-center justify-center gap-2 w-full max-w-[240px] text-[12px] font-semibold px-5 py-2.5 rounded-xl border border-[var(--color-accent-2)] bg-[var(--color-accent-2)] text-white hover:bg-transparent hover:text-[var(--color-accent-2)] transition-all duration-200 shadow-sm hover:shadow-md"
         >
+          <AlertCircle size={15} />
           Report Problem
         </button>
       </div>
@@ -261,7 +264,13 @@ export function FaultFeed({ faults, isAdmin, currentUser }: { faults: Fault[]; i
                   Mark as Resolved
                 </button>
               ) : null}
-              <button className="px-4 py-2 rounded-xl text-[13px] font-semibold bg-[var(--color-danger)] text-white hover:opacity-90 transition flex items-center gap-2">
+              <button 
+                onClick={() => {
+                  router.push(`/maintenance?faultId=${selectedFault.id}`);
+                  setSelectedFault(null);
+                }}
+                className="px-4 py-2 rounded-xl text-[13px] font-semibold bg-[var(--color-danger)] text-white hover:opacity-90 transition flex items-center gap-2"
+              >
                 Run RCA <ArrowRight size={14} />
               </button>
             </div>

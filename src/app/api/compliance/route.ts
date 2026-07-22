@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { computeCompliance } from "@/lib/compliance";
+import { warmStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function GET(req: NextRequest) {
+  await warmStore();
   const refresh = req.nextUrl.searchParams.get("refresh") === "1";
   const items = await computeCompliance(refresh);
   const summary = {

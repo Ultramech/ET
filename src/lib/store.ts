@@ -23,6 +23,46 @@ declare global {
   var __Nexus_store: KnowledgeStore | undefined;
 }
 
+// ── Redis helpers for corpus overflow ────────────────────────────────────────
+const CORPUS_REDIS_KEY = "nexus:corpus";
+
+function getRedis() {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return null;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { Redis } = require("@upstash/redis");
+    return new Redis({ url, token });
+  } catch {
+    return null;
+  }
+}
+
+export async function loadCorpusFromRedis(): Promise<PersistedCorpus | null> {
+  const redis = getRedis();
+  if (!redis) return null;
+  try {
+    return (await redis.get(CORPUS_REDIS_KEY)) as PersistedCorpus | null;
+  } catch (e) {
+    console.error("[store] redis load failed:", (e as Error).message);
+    return null;
+  }
+}
+
+export async function saveCorpusToRedis(data: PersistedCorpus): Promise<void> {
+  const redis = getRedis();
+  if (!redis) return;
+  try {
+    // Store without embeddings (too large) — embeddings are rebuilt in-memory
+    const slim = { ...data, embeddings: {} };
+    await redis.set(CORPUS_REDIS_KEY, slim);
+  } catch (e) {
+    console.error("[store] redis save failed:", (e as Error).message);
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function seedStore(): KnowledgeStore {
   return {
     documents: [...SEED_DOCUMENTS],
@@ -56,6 +96,28 @@ export function getStore(): KnowledgeStore {
   return globalThis.__Nexus_store;
 }
 
+/** Called once per cold-start by API routes: merges Redis corpus on top of seed/disk data. */
+export async function warmStore(): Promise<void> {
+  // Hydrate from disk first (works locally; no-op on Vercel)
+  if (!globalThis.__Nexus_store) {
+    globalThis.__Nexus_store = hydrate();
+  }
+  // On Vercel, disk is empty so we fall back to seed. Overlay Redis corpus.
+  const redisDisk = await loadCorpusFromRedis();
+  if (!redisDisk) return; // no redis data yet, seed is fine
+  const store = globalThis.__Nexus_store!;
+  // Only apply if Redis has MORE documents than we currently have
+  if (redisDisk.documents.length > store.documents.length) {
+    store.documents = redisDisk.documents;
+    store.nodes = redisDisk.nodes;
+    store.edges = redisDisk.edges;
+    store.compliance = redisDisk.compliance ?? store.compliance;
+    store.faults = (redisDisk as any).faults ?? store.faults;
+    // Embeddings are not stored in Redis (too large); they stay empty until re-embedded
+    console.log(`[store] warm: loaded ${store.documents.length} docs from Redis`);
+  }
+}
+
 function toPersisted(s: KnowledgeStore): PersistedCorpus {
   return {
     documents: s.documents,
@@ -69,7 +131,12 @@ function toPersisted(s: KnowledgeStore): PersistedCorpus {
 }
 
 export function persist() {
-  saveCorpus(toPersisted(getStore()));
+  const data = toPersisted(getStore());
+  saveCorpus(data);
+  // Also push to Redis so other serverless instances can pick it up
+  saveCorpusToRedis(data).catch((e) =>
+    console.error("[store] redis async persist failed:", e)
+  );
 }
 
 /** Merge nodes/edges (and optional embeddings) into the graph, deduping nodes. */

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { computeCompliance } from "@/lib/compliance";
-import { getStore } from "@/lib/store";
+import { getStore, warmStore } from "@/lib/store";
 import { PLANT } from "@/lib/data/seed";
 import { verifyToken, SESSION_COOKIE } from "@/lib/session";
 import { getUser } from "@/lib/users";
@@ -14,6 +14,7 @@ const esc = (s: string) =>
 // Self-contained, print-ready audit evidence pack (PS: "auto-generating
 // compliance evidence packages for audits"). Opens in a new tab; print to PDF.
 export async function GET(req: NextRequest) {
+  await warmStore();
   const session = await verifyToken(req.cookies.get(SESSION_COOKIE)?.value);
   const generatedBy = session ? getUser(session.username)?.displayName ?? session.username : "—";
   const items = await computeCompliance();

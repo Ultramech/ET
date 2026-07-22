@@ -4,6 +4,9 @@ Nexus is the "Unified Asset & Operations Brain": one queryable, cited,
 continuously-updated knowledge layer over the 7–12 disconnected document systems
 a large plant runs on.
 
+**🔗 Live Demo:** [nexus-et.vercel.app](https://nexus-et.vercel.app)  
+**📺 Pitch Video:** [Watch on Google Drive](https://drive.google.com/file/d/18iPAkHn5JLbjVE_CbpeAOT29zypSQSda/view?usp=sharing)
+
 ## 1. System diagram
 
 ```mermaid

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStore } from "@/lib/store";
+import { getStore, warmStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 
 // Lightweight node search over the whole graph (scales past the render cap).
 export async function GET(req: NextRequest) {
+  await warmStore();
   const q = (req.nextUrl.searchParams.get("q") || "").toLowerCase().trim();
   if (!q) return NextResponse.json({ results: [] });
   const store = getStore();

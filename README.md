@@ -9,6 +9,9 @@ Built for the challenge _"AI for Industrial Knowledge Intelligence."_ Demo plant
 **Bharat Refinery Ltd, Vadodara — Crude Distillation Unit (CDU-1)** (fictional,
 realistic Indian-refinery corpus).
 
+**🔗 Live Demo:** [nexus-et.vercel.app](https://nexus-et.vercel.app)
+**📺 Pitch Video:** [Watch on Google Drive](https://drive.google.com/file/d/18iPAkHn5JLbjVE_CbpeAOT29zypSQSda/view?usp=sharing)
+
 ---
 
 ## The core story it tells

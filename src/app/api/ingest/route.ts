@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ingestDocument } from "@/lib/ingest";
+import { warmStore } from "@/lib/store";
 import type { DocType } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {
+  await warmStore();
   let body;
   try {
     body = await req.json();

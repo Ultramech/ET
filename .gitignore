@@ -45,3 +45,4 @@ next-env.d.ts
 /data/corpus/
 /data/users.json
 /data/gaps.json
+.env*.local

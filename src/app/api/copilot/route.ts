@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { answerQuery } from "@/lib/rag/copilot";
-import { recordGap } from "@/lib/gaps";
+import { recordGapAsync } from "@/lib/gaps";
+import { warmStore } from "@/lib/store";
 import { verifyToken, SESSION_COOKIE } from "@/lib/session";
 import { getUser } from "@/lib/users";
 
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "query too long (2000 char cap)" }, { status: 413 });
   }
   try {
+    await warmStore();
     const started = Date.now();
     const result = await answerQuery(query);
 
@@ -31,7 +33,8 @@ export async function POST(req: NextRequest) {
     if (result.band === "insufficient" && !result.refused) {
       const session = await verifyToken(req.cookies.get(SESSION_COOKIE)?.value);
       const asker = session ? getUser(session.username)?.displayName ?? session.username : "unknown";
-      gapId = recordGap(query, asker).id;
+      const gap = await recordGapAsync(query, asker);
+      gapId = gap.id;
     }
 
     return NextResponse.json({ ...result, gapId, latencyMs: Date.now() - started });

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStore } from "@/lib/store";
+import { getStore, warmStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
+  await warmStore();
   const store = getStore();
   const focus = req.nextUrl.searchParams.get("focus");
   const depth = Number(req.nextUrl.searchParams.get("depth") ?? 1);

@@ -83,7 +83,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen overflow-hidden">
       {/* Desktop sidebar */}
       <aside
         className="sidebar-shadow sticky top-0 hidden h-screen w-[220px] shrink-0 flex-col border-r border-[var(--color-border)] bg-[var(--color-panel)] md:flex"
@@ -136,7 +136,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Main content */}
-      <main className="grid-bg min-h-screen min-w-0 flex-1 overflow-x-hidden px-4 pb-24 pt-[68px] md:px-8 md:pb-10 md:pt-8">
+      <main className="grid-bg flex-1 overflow-y-auto overflow-x-hidden px-4 pb-24 pt-[68px] md:px-8 md:pb-10 md:pt-8">
         <div className="mx-auto w-full min-w-0 max-w-6xl">{children}</div>
       </main>
 
@@ -176,15 +176,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 function Brand({ compact }: { compact?: boolean }) {
   return (
     <Link href="/" className={cn("flex items-center gap-2.5", compact ? "" : "px-4 py-4 pb-2")}>
-      <div
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl text-[15px] font-bold text-white"
-        style={{
-          background: "linear-gradient(135deg, #1A73E8 0%, #0D47A1 100%)",
-          boxShadow: "0 2px 8px rgba(26,115,232,0.35)",
-        }}
-      >
-        N
-      </div>
+      <img src="/logo.png" alt="Nexus Logo" className="h-9 w-9 shrink-0 object-cover rounded-xl shadow-sm" />
       {!compact && (
         <div className="leading-tight">
           <div className="text-[20px] font-bold tracking-wide text-[var(--color-fg)]">Nexus</div>

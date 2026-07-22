@@ -56,25 +56,13 @@ export function loadCorpus(): PersistedCorpus | null {
   }
 }
 
-let writeQueued = false;
-let pending: PersistedCorpus | null = null;
-
-/** Debounced async write — batches rapid ingests into one flush. */
+/** Synchronous write — safe for serverless (completes before response is sent). */
 export function saveCorpus(data: PersistedCorpus): void {
-  pending = data;
-  if (writeQueued) return;
-  writeQueued = true;
-  setTimeout(() => {
-    writeQueued = false;
-    const snapshot = pending;
-    pending = null;
-    if (!snapshot) return;
-    try {
-      fs.writeFileSync(FILE, JSON.stringify(snapshot), "utf-8");
-    } catch (e) {
-      console.error("[persist] saveCorpus failed:", (e as Error).message);
-    }
-  }, 250);
+  try {
+    fs.writeFileSync(FILE, JSON.stringify(data), "utf-8");
+  } catch (e) {
+    console.error("[persist] saveCorpus failed:", (e as Error).message);
+  }
 }
 
 /** Synchronous flush — used by the seeding script so it can exit cleanly. */

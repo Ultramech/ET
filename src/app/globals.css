@@ -7,7 +7,7 @@
   --color-panel: #FFFFFF;
   --color-panel-2: #ECF0F8;
   --color-border: #E0E4EE;
-  --color-muted: #5F6A85;
+  --color-muted: #475569;
   --color-fg: #0D1117;
   --color-accent: #1A73E8;      /* Google Blue */
   --color-accent-2: #E37400;
@@ -24,7 +24,7 @@
   --color-panel: #1A1C1F;       /* Slightly lighter for cards */
   --color-panel-2: #24272B;     /* Inner interactive elements */
   --color-border: #33373E;      /* Subtle borders */
-  --color-muted: #667085;       /* Secondary grey */
+  --color-muted: #A0AABF;       /* Secondary grey (brightened for contrast) */
   --color-fg: #E8EAED;          /* Light text */
   --color-accent: #1570EF;      /* Primary Blue */
   --color-accent-2: #C85000;    /* Tertiary Orange */

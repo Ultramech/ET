@@ -70,9 +70,7 @@ function LoginForm() {
     <div className="grid-bg flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-4">
         <div className="text-center">
-          <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-emerald-400 text-xl font-bold text-black">
-            N
-          </div>
+          <img src="/logo.png" alt="Nexus Logo" className="mx-auto h-14 w-14 object-cover rounded-2xl shadow-sm" />
           <h1 className="mt-3 text-xl font-semibold tracking-tight">Nexus</h1>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
             The Unified Asset & Operations Brain · Bharat Refinery Ltd, Vadodara
@@ -109,7 +107,7 @@ function LoginForm() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
               autoComplete="username"
-              className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm outline-none focus:border-cyan-400/50"
+              className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm placeholder:text-[var(--color-muted)] outline-none focus:border-cyan-400/50"
             />
             {mode === "signup" && (
               <>
@@ -117,13 +115,13 @@ function LoginForm() {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="Full name (e.g. S. Iyer)"
-                  className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm outline-none focus:border-cyan-400/50"
+                  className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm placeholder:text-[var(--color-muted)] outline-none focus:border-cyan-400/50"
                 />
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Role title (e.g. Shift Supervisor)"
-                  className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm outline-none focus:border-cyan-400/50"
+                  className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm placeholder:text-[var(--color-muted)] outline-none focus:border-cyan-400/50"
                 />
               </>
             )}
@@ -133,7 +131,7 @@ function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               autoComplete={mode === "login" ? "current-password" : "new-password"}
-              className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm outline-none focus:border-cyan-400/50"
+              className="h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3 text-sm placeholder:text-[var(--color-muted)] outline-none focus:border-cyan-400/50"
             />
             {error && <p className="text-xs text-rose-700 dark:text-rose-300">{error}</p>}
             <button
