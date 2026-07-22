@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=32&pause=1000&color=3B82F6&background=00000000&center=true&vCenter=true&width=900&lines=Nexus;Unified+Asset+%26+Operations+Brain;7+Disconnected+Systems+%E2%86%92+One+Brain;AI-Powered+Industrial+Knowledge+Intelligence" alt="Nexus Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Orbitron&weight=700&size=32&pause=1000&color=3B82F6&background=00000000&center=true&vCenter=true&width=900&lines=Nexus;Unified+Asset+%26+Operations+Brain;Several+Disconnected+Systems+%E2%86%92+One+Brain;AI-Powered+Industrial+Knowledge+Intelligence" alt="Nexus Typing SVG" />
 
 <br/>
 
