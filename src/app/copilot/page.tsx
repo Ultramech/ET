@@ -302,6 +302,22 @@ function AnswerCard({ a }: { a: CopilotAnswer & { latencyMs?: number; gapId?: st
   );
 }
 
+function renderMarkdown(text: string, keyBase: number) {
+  const boldParts = text.split(/(\*\*.*?\*\*)/g);
+  return boldParts.map((bp, i) => {
+    if (bp.startsWith("**") && bp.endsWith("**")) {
+      return <strong key={`${keyBase}-b-${i}`} className="font-semibold">{bp.slice(2, -2)}</strong>;
+    }
+    const italicParts = bp.split(/(\*.*?\*)/g);
+    return italicParts.map((ip, j) => {
+      if (ip.startsWith("*") && ip.endsWith("*") && ip.length > 2) {
+        return <em key={`${keyBase}-b-${i}-i-${j}`}>{ip.slice(1, -1)}</em>;
+      }
+      return <span key={`${keyBase}-b-${i}-i-${j}`}>{ip}</span>;
+    });
+  });
+}
+
 // render inline [[n]] markers as citation pills
 function AnswerText({ text, citations }: { text: string; citations: { docTitle: string }[] }) {
   const parts = text.split(/(\[\[\d+\]\])/g);
@@ -321,7 +337,7 @@ function AnswerText({ text, citations }: { text: string; citations: { docTitle: 
             </sup>
           );
         }
-        return <span key={i}>{p}</span>;
+        return <span key={i}>{renderMarkdown(p, i)}</span>;
       })}
     </div>
   );

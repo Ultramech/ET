@@ -56,7 +56,7 @@ export default async function Dashboard() {
       {/* ── Module Cards — 2-row horizontal scroll grid ──────── */}
       <section>
         <p className="section-label">Modules</p>
-        <DragScroll variant="grid2">
+        <DragScroll variant="row">
           {/* Row 1 fills top cells, row 2 fills bottom — grid-auto-flow: column */}
           <ModuleCard href="/copilot" icon={<MessagesSquare size={18} />} title="Expert Knowledge Copilot" desc="Talk to your documents. Ask questions and get instant, accurate answers with citations for field technicians." tag="Mobile-Ready" />
           <ModuleCard href="/compliance" icon={<ShieldCheck size={18} />} title="Quality & Compliance" desc="Automatically map your procedures against safety regulations to instantly identify any compliance gaps." tag={`${gaps.length} Action Items`} />
